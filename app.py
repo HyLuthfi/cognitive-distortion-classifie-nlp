@@ -134,7 +134,9 @@ st.markdown(css_kustom, unsafe_allow_html=True)
 PERANGKAT = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 IDENTITAS_MODEL_DASAR = "w11wo/indonesian-roberta-base-sentiment-classifier"
 IDENTITAS_MODEL_LEVEL_SATU = "Luthfi22/indo-cognitive-distortion-binary"
-LOKASI_ADAPTER_LEVEL_DUA = "./lora_adapter_level2"
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+LOKASI_ADAPTER_LEVEL_DUA = os.path.join(BASE_DIR, "lora_adapter_level2")
 
 daftar_kategori_distorsi = [
     "All-or-Nothing Thinking",
@@ -161,13 +163,15 @@ def muat_model_level_satu():
         model.to(PERANGKAT)
         model.eval()
         return model
-    except Exception:
+    except Exception as e:
+        st.error(f"Error memuat Level 1 (HuggingFace): {str(e)}")
         return None
 
 @st.cache_resource
 def muat_model_level_dua():
     try:
         if not os.path.exists(LOKASI_ADAPTER_LEVEL_DUA):
+            st.error(f"Error: Folder adapter tidak ditemukan di {LOKASI_ADAPTER_LEVEL_DUA}")
             return None
         model_dasar = AutoModelForSequenceClassification.from_pretrained(
             IDENTITAS_MODEL_DASAR,
@@ -177,7 +181,8 @@ def muat_model_level_dua():
         model_lora.to(PERANGKAT)
         model_lora.eval()
         return model_lora
-    except Exception:
+    except Exception as e:
+        st.error(f"Error memuat Level 2 (LoRA): {str(e)}")
         return None
 
 def tampilkan_gambar_visualisasi(nama_file, deskripsi):
