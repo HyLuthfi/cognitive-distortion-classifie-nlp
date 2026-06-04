@@ -243,10 +243,10 @@ with tab_analisis:
                     prediksi_satu = torch.argmax(probabilitas_satu, dim=-1).item()
                     skor_kepastian_satu = probabilitas_satu[0][prediksi_satu].item() * 100
 
-                status_kelas = "Normal" if prediksi_satu == 0 else "Distorsi Kognitif Terdeteksi"
-                status_gaya = "status-normal" if prediksi_satu == 0 else "status-distorsi"
+                status_kelas = "Normal" if prediksi_satu == 1 else "Distorsi Kognitif Terdeteksi"
+                status_gaya = "status-normal" if prediksi_satu == 1 else "status-distorsi"
 
-                if prediksi_satu == 0:
+                if prediksi_satu == 1:
                     kolom_hasil_kiri, kolom_hasil_tengah, kolom_hasil_kanan = st.columns([1, 2, 1])
                     with kolom_hasil_tengah:
                         st.markdown(f"""
