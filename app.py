@@ -63,16 +63,6 @@ css_kustom = """
         text-align: center;
         transition: transform 0.2s ease-in-out;
     }
-    
-    .info-card {
-        background-color: #F1F5F9;
-        color: #334155 !important;
-        border: 1px solid #E2E8F0;
-        border-left: 4px solid #3B82F6;
-        border-radius: 8px;
-        padding: 24px;
-        margin-bottom: 24px;
-    }
 
     h1, h2, h3, h4 {
         color: #0F172A !important;
@@ -117,13 +107,6 @@ css_kustom = """
         font-size: 1.1rem;
         display: inline-block;
         border: 1px solid #F87171;
-    }
-
-    .stTextArea > div > div > textarea {
-        background-color: #FFFFFF;
-        color: #0F172A !important;
-        border: 1px solid #CBD5E1;
-        border-radius: 8px;
     }
     
     hr {
@@ -214,7 +197,8 @@ with tab_analisis:
     kolom_kiri, kolom_tengah, kolom_kanan = st.columns([1, 2, 1])
 
     with kolom_tengah:
-        st.markdown("<div class='info-card'><b>Instruksi Operasional:</b> Masukkan teks atau kalimat berbahasa Indonesia yang ingin dianalisis secara psikologis. Sistem akan melakukan penyaringan biner sebelum mengekstraksi jenis distorsi spesifik.</div>", unsafe_allow_html=True)
+        st.markdown("<h3 style='text-align: center; color: #1E293B !important; margin-bottom: 0.5rem;'>Ruang Analisis Kognitif</h3>", unsafe_allow_html=True)
+        st.markdown("<p style='text-align: center; color: #64748B !important; margin-bottom: 2rem;'>Ketik teks secara manual atau pilih skenario pengujian spesifik dari dataset.</p>", unsafe_allow_html=True)
         
         sampel_cepat = {
             "--- Ketik Manual Secara Bebas ---": "",
