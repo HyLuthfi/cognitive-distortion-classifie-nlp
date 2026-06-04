@@ -132,7 +132,7 @@ css_kustom = """
 st.markdown(css_kustom, unsafe_allow_html=True)
 
 PERANGKAT = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-IDENTITAS_MODEL_DASAR = "w11wo/indonesian-roberta-base"
+IDENTITAS_MODEL_DASAR = "w11wo/indonesian-roberta-base-sentiment-classifier"
 IDENTITAS_MODEL_LEVEL_SATU = "Luthfi22/indo-cognitive-distortion-binary"
 LOKASI_ADAPTER_LEVEL_DUA = "./lora_adapter_level2"
 
