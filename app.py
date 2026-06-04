@@ -175,7 +175,8 @@ def muat_model_level_dua():
             return None
         model_dasar = AutoModelForSequenceClassification.from_pretrained(
             IDENTITAS_MODEL_DASAR,
-            num_labels=11
+            num_labels=11,
+            ignore_mismatched_sizes=True
         )
         model_lora = PeftModel.from_pretrained(model_dasar, LOKASI_ADAPTER_LEVEL_DUA)
         model_lora.to(PERANGKAT)
