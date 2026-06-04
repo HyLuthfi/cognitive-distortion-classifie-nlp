@@ -357,7 +357,9 @@ with tab_model_1:
     st.markdown("<br>### Tahap 3: Evaluasi & Metrik Performa<br>", unsafe_allow_html=True)
     tampilkan_gambar_visualisasi("grafik_model1.png", "Grafik Pelatihan & Loss (Model 1)")
     st.markdown("<br>", unsafe_allow_html=True)
-    tampilkan_gambar_visualisasi("metrik_eval_model1.png", "Metrik Evaluasi Keseluruhan (Model 1)")
+    col_spasi1, col_metrik1, col_spasi2 = st.columns([1, 2, 1])
+    with col_metrik1:
+        tampilkan_gambar_visualisasi("metrik_eval_model1.png", "Metrik Evaluasi Keseluruhan (Model 1)")
     st.markdown("<br>", unsafe_allow_html=True)
     tampilkan_gambar_visualisasi("confusion_model1.png", "Confusion Matrix Klasifikasi Biner")
     
@@ -393,7 +395,9 @@ with tab_model_2:
     st.markdown("<br>### Tahap 3: Evaluasi & Hasil Akhir (11 Kelas Kognitif)<br>", unsafe_allow_html=True)
     tampilkan_gambar_visualisasi("grafik_model2.png", "Grafik Pelatihan & Loss LoRA (Model 2)")
     st.markdown("<br>", unsafe_allow_html=True)
-    tampilkan_gambar_visualisasi("metrik_eval_model2.png", "Metrik Evaluasi 11 Kelas Distorsi")
+    col_spasi3, col_metrik2, col_spasi4 = st.columns([1, 2, 1])
+    with col_metrik2:
+        tampilkan_gambar_visualisasi("metrik_eval_model2.png", "Metrik Evaluasi 11 Kelas Distorsi")
     st.markdown("<br>", unsafe_allow_html=True)
     tampilkan_gambar_visualisasi("confusion_model2.png", "Confusion Matrix Ekstensif untuk 11 Kelas")
     
