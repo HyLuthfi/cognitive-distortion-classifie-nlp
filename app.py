@@ -13,7 +13,7 @@ st.set_page_config(
 
 css_kustom = """
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 
     html, body, [class*="css"]  {
         font-family: 'Plus Jakarta Sans', sans-serif;
@@ -23,95 +23,127 @@ css_kustom = """
     
     .stApp {
         background-color: #F8FAFC;
+        background-image: radial-gradient(circle at 50% -10%, #E0E7FF 0%, transparent 60%);
     }
 
     .stTabs [data-baseweb="tab-list"] {
         display: flex;
         justify-content: center;
-        gap: 30px;
-        border-bottom: 1px solid #E2E8F0;
-        padding-bottom: 10px;
+        gap: 10px;
+        border-bottom: none;
+        padding: 8px;
         margin-bottom: 2rem;
+        background: rgba(255, 255, 255, 0.6);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-radius: 20px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.8);
     }
     
     .stTabs [data-baseweb="tab"] {
-        height: 50px;
+        height: 42px;
         white-space: pre-wrap;
         background-color: transparent;
-        border-radius: 0px;
-        padding: 10px 15px;
+        border-radius: 12px;
+        padding: 8px 24px;
         color: #64748B;
         font-weight: 600;
-        font-size: 1.1rem;
+        font-size: 1.05rem;
         border: none !important;
-        transition: all 0.3s;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
     
     .stTabs [aria-selected="true"] {
-        color: #0F172A !important;
-        border-bottom: 3px solid #2563EB !important;
-        background-color: transparent !important;
+        color: #FFFFFF !important;
+        background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%) !important;
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
     }
 
     .metric-card {
-        background-color: #FFFFFF;
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
         color: #0F172A !important;
-        border: 1px solid #E2E8F0;
-        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        border-radius: 24px;
         padding: 32px 24px;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
         text-align: center;
-        transition: transform 0.2s ease-in-out;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .metric-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        border: 1px solid rgba(59, 130, 246, 0.3);
     }
 
-    h1, h2, h3, h4 {
+    h1 {
+        background: linear-gradient(135deg, #0F172A 0%, #3B82F6 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 800;
+    }
+
+    h2, h3, h4 {
         color: #0F172A !important;
+        font-weight: 700;
     }
     
     p {
-        color: #334155 !important;
+        color: #475569 !important;
+        line-height: 1.6;
     }
 
     .stButton > button {
-        background-color: #2563EB;
+        background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
         color: white !important;
-        border-radius: 6px;
+        border-radius: 14px;
         padding: 0.75rem 2rem;
         font-weight: 600;
         border: none;
         width: 100%;
-        transition: all 0.3s;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 4px 14px 0 rgba(37, 99, 235, 0.39);
     }
     
     .stButton > button:hover {
-        background-color: #1D4ED8;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5);
+    }
+    
+    .stButton > button:active {
+        transform: translateY(0);
     }
     
     .status-normal {
         color: #059669;
         background-color: #D1FAE5;
-        padding: 6px 20px;
-        border-radius: 6px;
-        font-weight: 600;
+        padding: 8px 24px;
+        border-radius: 20px;
+        font-weight: 700;
         font-size: 1.1rem;
         display: inline-block;
         border: 1px solid #34D399;
+        box-shadow: 0 4px 6px rgba(52, 211, 153, 0.2);
     }
     
     .status-distorsi {
         color: #DC2626;
         background-color: #FEE2E2;
-        padding: 6px 20px;
-        border-radius: 6px;
-        font-weight: 600;
+        padding: 8px 24px;
+        border-radius: 20px;
+        font-weight: 700;
         font-size: 1.1rem;
         display: inline-block;
         border: 1px solid #F87171;
+        box-shadow: 0 4px 6px rgba(248, 113, 113, 0.2);
     }
     
     hr {
         border-color: #E2E8F0;
-        margin: 2rem 0;
+        margin: 2.5rem 0;
     }
 </style>
 """
