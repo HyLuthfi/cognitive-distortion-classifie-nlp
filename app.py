@@ -357,7 +357,17 @@ with tab_model_1:
     st.markdown("<br>### Tahap 3: Evaluasi & Metrik Performa<br>", unsafe_allow_html=True)
     tampilkan_gambar_visualisasi("grafik_model1.png", "Grafik Pelatihan & Loss (Model 1)")
     st.markdown("<br>", unsafe_allow_html=True)
-    tampilkan_gambar_visualisasi("metrik_eval_model1.png", "Metrik Evaluasi Keseluruhan (Model 1)")
+    
+    st.markdown("""
+    **Laporan Klasifikasi Biner (Classification Report)**
+    
+    | Kelas Kategori | Precision | Recall | F1-Score | Support |
+    | :--- | :--- | :--- | :--- | :--- |
+    | **0 (Normal)** | 0.95 | 0.97 | 0.96 | 120 |
+    | **1 (Distorsi Kognitif)** | 0.98 | 0.96 | 0.97 | 363 |
+    | **Akurasi Keseluruhan** | **-** | **-** | **96.50%** | **483** |
+    """)
+    
     st.markdown("<br>", unsafe_allow_html=True)
     tampilkan_gambar_visualisasi("confusion_model1.png", "Confusion Matrix Klasifikasi Biner")
     
@@ -393,7 +403,26 @@ with tab_model_2:
     st.markdown("<br>### Tahap 3: Evaluasi & Hasil Akhir (11 Kelas Kognitif)<br>", unsafe_allow_html=True)
     tampilkan_gambar_visualisasi("grafik_model2.png", "Grafik Pelatihan & Loss LoRA (Model 2)")
     st.markdown("<br>", unsafe_allow_html=True)
-    tampilkan_gambar_visualisasi("metrik_eval_model2.png", "Metrik Evaluasi 11 Kelas Distorsi")
+    
+    st.markdown("""
+    **Laporan Klasifikasi Multikelas (Akurasi Final: 81.82%)**
+    
+    | Kelas Distorsi Kognitif | Precision | Recall | F1-Score | Support |
+    | :--- | :--- | :--- | :--- | :--- |
+    | All-or-nothing | 0.62 | 0.67 | 0.64 | 24 |
+    | Discounting the positives | 0.89 | 0.89 | 0.89 | 36 |
+    | Emotional Reasoning | 1.00 | 0.33 | 0.50 | 6 |
+    | Fortune-telling | 0.33 | 0.11 | 0.17 | 9 |
+    | Labeling | 0.79 | 0.86 | 0.83 | 58 |
+    | Magnification or Minimization | 1.00 | 0.46 | 0.63 | 13 |
+    | Mental filter | 0.81 | 0.89 | 0.85 | 28 |
+    | Mind Reading | 0.78 | 0.86 | 0.82 | 58 |
+    | Overgeneralization | 0.66 | 0.72 | 0.69 | 32 |
+    | Personalization and Blame | 0.93 | 0.91 | 0.92 | 43 |
+    | Should statement | 0.96 | 0.95 | 0.95 | 56 |
+    | **Macro Average** | **0.80** | **0.70** | **0.72** | **363** |
+    """)
+
     st.markdown("<br>", unsafe_allow_html=True)
     tampilkan_gambar_visualisasi("confusion_model2.png", "Confusion Matrix Ekstensif untuk 11 Kelas")
     
