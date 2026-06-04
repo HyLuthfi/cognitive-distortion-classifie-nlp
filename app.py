@@ -202,25 +202,26 @@ tab_analisis, tab_metodologi, tab_visualisasi = st.tabs([
 with tab_analisis:
     st.markdown("<br>", unsafe_allow_html=True)
     
-    tokenizer = muat_tokenizer()
-    model_satu = muat_model_level_satu()
-    model_dua = muat_model_level_dua()
+    kolom_kiri, kolom_tengah, kolom_kanan = st.columns([1, 2, 1])
 
-    if model_satu is None or model_dua is None:
-        st.error("Gagal memuat arsitektur jaringan saraf tiruan. Pastikan koneksi internet stabil untuk mengunduh model dari repositori cloud, dan adapter lokal tersedia.")
-    else:
-        kolom_kiri, kolom_tengah, kolom_kanan = st.columns([1, 2, 1])
+    with kolom_tengah:
+        st.markdown("<div class='info-card'><b>Instruksi Operasional:</b> Masukkan teks atau kalimat berbahasa Indonesia yang ingin dianalisis secara psikologis. Sistem akan melakukan penyaringan biner sebelum mengekstraksi jenis distorsi spesifik.</div>", unsafe_allow_html=True)
+        
+        input_teks = st.text_area("Teks Analisis", height=150, placeholder="Ketik teks di sini...", label_visibility="collapsed")
+        tombol_analisis = st.button("Jalankan Inferensi Forensik")
 
-        with kolom_tengah:
-            st.markdown("<div class='info-card'><b>Instruksi Operasional:</b> Masukkan teks atau kalimat berbahasa Indonesia yang ingin dianalisis secara psikologis. Sistem akan melakukan penyaringan biner sebelum mengekstraksi jenis distorsi spesifik.</div>", unsafe_allow_html=True)
-            
-            input_teks = st.text_area("Teks Analisis", height=150, placeholder="Ketik teks di sini...", label_visibility="collapsed")
-            tombol_analisis = st.button("Jalankan Inferensi Forensik")
+    if tombol_analisis and input_teks:
+        st.markdown("<hr>", unsafe_allow_html=True)
+        st.markdown("<h2 style='text-align: center; margin-bottom: 2rem;'>Laporan Hasil Ekstraksi Kognitif</h2>", unsafe_allow_html=True)
+        
+        with st.spinner("Menginisialisasi & mengunduh bobot AI dari Cloud (Proses ini memakan waktu 1-3 menit pada percobaan pertama)..."):
+            tokenizer = muat_tokenizer()
+            model_satu = muat_model_level_satu()
+            model_dua = muat_model_level_dua()
 
-        if tombol_analisis and input_teks:
-            st.markdown("<hr>", unsafe_allow_html=True)
-            st.markdown("<h2 style='text-align: center; margin-bottom: 2rem;'>Laporan Hasil Ekstraksi Kognitif</h2>", unsafe_allow_html=True)
-            
+        if model_satu is None or model_dua is None:
+            st.error("Gagal memuat arsitektur jaringan saraf tiruan. Pastikan koneksi internet stabil untuk mengunduh model dari repositori cloud, dan adapter lokal tersedia.")
+        else:
             with st.spinner("Memproses aktivasi lapisan RoBERTa..."):
                 input_tensor = tokenizer(
                     input_teks, 
