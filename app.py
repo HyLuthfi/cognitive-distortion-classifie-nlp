@@ -338,8 +338,12 @@ with tab_model_1:
     *   **Labeling Ulang:** Mengonversi 11 jenis kelas distorsi menjadi satu kelas sentral (Label `1` = *Distorsi Kognitif*), dan mempertahankan kelas 'No Distortion' (Label `0` = *Normal*).
     *   **Tokenisasi:** Menggunakan tokenizer dari `w11wo/indonesian-roberta-base-sentiment-classifier` dengan batas maksimal *sequence length* 256 token untuk mengubah teks menjadi *input IDs* dan *attention masks*.
     
+    ---
+    
     ### Tahap 1: Arsitektur Model (Full Fine-Tuning)
     Model Level 1 didesain sebagai "gerbang penyaring" pertama. Kami memanfaatkan arsitektur **RoBERTa (Robustly Optimized BERT Approach)** yang telah di-*pretrain* pada korpus bahasa Indonesia. Pada tahap ini, seluruh bobot jaringan (*full fine-tuning*) disesuaikan untuk tugas klasifikasi biner. Lapisan klasifikasi akhir diubah konfigurasinya untuk mendeteksi `num_labels=2`.
+    
+    ---
     
     ### Tahap 2: Hyperparameter Tuning
     Penyesuaian konfigurasi pembelajaran (*hyperparameters*) dilakukan secara komprehensif untuk memastikan konvergensi model tanpa terjadi *vanishing gradient* atau *mode collapse*. Berikut adalah rincian metrik pelatihan:
@@ -352,9 +356,13 @@ with tab_model_1:
     | **Epochs** | `20` | Jumlah iterasi penuh pada seluruh dataset pelatihan. |
     | **Weight Decay** | `0.05` | Mencegah *overfitting* yang ekstrem. |
     | **LR Scheduler** | `Cosine` (Warmup 0.1) | Mengatur kurva laju pembelajaran secara dinamis. |
+    
+    ---
+    
+    ### Tahap 3: Evaluasi & Metrik Performa
     """)
     
-    st.markdown("<br>### Tahap 3: Evaluasi & Metrik Performa<br>", unsafe_allow_html=True)
+    st.markdown("<br>", unsafe_allow_html=True)
     tampilkan_gambar_visualisasi("grafik_model1.png", "Grafik Pelatihan & Loss (Model 1)")
     st.markdown("<br>", unsafe_allow_html=True)
     col_spasi1, col_metrik1, col_spasi2 = st.columns([1, 2, 1])
@@ -375,9 +383,13 @@ with tab_model_2:
     ### Tahap 0: Segmentasi & Re-Tokenisasi Data
     Model Level 2 dikhususkan hanya untuk penderita distorsi. Oleh karena itu, data yang masuk ke tahap ini secara eksklusif hanyalah dataset dengan label asli distorsi kognitif (11 kelas). Data *No Distortion* dibuang secara terprogram. Proses tokenisasi menggunakan panjang sekuens yang sama (256 token) untuk menjaga integritas tensor.
 
+    ---
+
     ### Tahap 1: Arsitektur Model (Parameter-Efficient Fine-Tuning)
     Karena 11 kelas klasifikasi membutuhkan sensitivitas leksikal yang lebih tinggi, *Full Fine-Tuning* berisiko memicu *catastrophic forgetting*. Solusi yang diterapkan adalah menggunakan **Low-Rank Adaptation (LoRA)**. 
     Kami membekukan ( *freeze* ) seluruh matriks parameter asli RoBERTa (berukuran >500MB) dan hanya menyuntikkan matriks pembaruan kecil (*adapters*) ke dalam lapisan *Query* dan *Value* pada modul atensi. Ini menghasilkan ukuran model tambahan hanya ~4.7MB.
+
+    ---
 
     ### Tahap 2: Konfigurasi LoRA & Hyperparameter
     Parameter di bawah ini adalah kunci utama untuk mencapai ekuilibrium performa antara komputasi yang efisien dengan tingkat akurasi diagnostik.
@@ -390,9 +402,13 @@ with tab_model_2:
     | **LoRA Dropout** | `0.1` | Probabilitas menonaktifkan neuron untuk mencegah *overfitting*. |
     | **Learning Rate** | `3e-4` | Karena parameter sedikit, LR ditingkatkan 15x lipat dari Model 1. |
     | **Epochs** | `15` | Proses adaptasi LoRA butuh iterasi lebih banyak untuk konvergen. |
+    
+    ---
+    
+    ### Tahap 3: Evaluasi & Hasil Akhir (11 Kelas Kognitif)
     """)
 
-    st.markdown("<br>### Tahap 3: Evaluasi & Hasil Akhir (11 Kelas Kognitif)<br>", unsafe_allow_html=True)
+    st.markdown("<br>", unsafe_allow_html=True)
     tampilkan_gambar_visualisasi("grafik_model2.png", "Grafik Pelatihan & Loss LoRA (Model 2)")
     st.markdown("<br>", unsafe_allow_html=True)
     col_spasi3, col_metrik2, col_spasi4 = st.columns([1, 2, 1])
