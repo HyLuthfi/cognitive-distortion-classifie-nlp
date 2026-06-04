@@ -213,7 +213,20 @@ with tab_analisis:
     with kolom_tengah:
         st.markdown("<div class='info-card'><b>Instruksi Operasional:</b> Masukkan teks atau kalimat berbahasa Indonesia yang ingin dianalisis secara psikologis. Sistem akan melakukan penyaringan biner sebelum mengekstraksi jenis distorsi spesifik.</div>", unsafe_allow_html=True)
         
-        input_teks = st.text_area("Teks Analisis", height=150, placeholder="Ketik teks di sini...", label_visibility="collapsed")
+        sampel_cepat = {
+            "--- Ketik Manual Secara Bebas ---": "",
+            "[Normal] Saya percaya pencapaian dalam hidup adalah hasil proses...": "Tidak pernah, karena saya percaya bahwa setiap yang kita capai atau kita dapatkan dalam hidup adalah hasil dari proses kita sendiri",
+            "[Normal] Teman bilang soal ujian sulit, saya tetap fokus...": "teman bilang soal ujian akan sesulit itu dan semua akan remedial, saya mengabaikan dan biarlah tetap fokus apa dipelajari dan dikerjakan",
+            "[Normal] Menyaring nasihat yang diberikan...": "Saya selalu menyaring omongan atau nasihat yang diberikan kepada saya karena tak semua omongan orang bisa dipercaya dan benar",
+            "[Distorsi] Mereka menjauh, saya kira tidak menyukai saya...": "teman teman dekat saya saat sma sering berbisik saat ada saya dan menjauh perlahan, saya kira mereka tidak menyukai saya dan mengomongi saya dibelakang saya, ternyata benar",
+            "[Distorsi] Orang tua bertengkar, pasti selalu bertengkar lagi...": "Saat orang tua saya bertengkar mempermasalahkan setiap hal, setelahnya saya berpikir pasti mereka akan selalu bertengkar lagi lagi dan lagi",
+            "[Distorsi] Gagal melakukan hal tertentu, merasa tidak berguna...": "Masa kritis saya masa SMP-Awal SMA, pokoknya apabila saya gagal lakukan hal tertentu misalkan tugas atau terima teguran, sensitif saya meningkat dan merasa saya tidak berguna dan gagal",
+            "[Distorsi] Nilai di bawah 90, prestasi tidak bagus...": "Saya selalu berpikir jika nilai saya di bawah 90, maka prestasi akademis saya tidak bagus."
+        }
+        
+        pilihan = st.selectbox("Pilih Sampel Cepat dari Dataset:", list(sampel_cepat.keys()))
+        
+        input_teks = st.text_area("Teks Analisis", value=sampel_cepat[pilihan], height=150, placeholder="Ketik teks di sini...", label_visibility="collapsed")
         tombol_analisis = st.button("Jalankan Inferensi Forensik")
 
     if tombol_analisis and input_teks:
