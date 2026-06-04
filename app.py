@@ -154,7 +154,7 @@ daftar_kategori_distorsi = [
 
 @st.cache_resource
 def muat_tokenizer():
-    return AutoTokenizer.from_pretrained(IDENTITAS_MODEL_LEVEL_SATU)
+    return AutoTokenizer.from_pretrained(IDENTITAS_MODEL_DASAR)
 
 @st.cache_resource
 def muat_model_level_satu():
@@ -267,11 +267,7 @@ with tab_analisis:
                         prediksi_dua = torch.argmax(probabilitas_dua, dim=-1).item()
                         skor_kepastian_dua = probabilitas_dua[0][prediksi_dua].item() * 100
                     
-                    try:
-                        kategori_spesifik = model_dua.config.id2label.get(prediksi_dua, daftar_kategori_distorsi[prediksi_dua])
-                    except Exception:
-                        kategori_spesifik = f"Kategori {prediksi_dua}"
-
+                    kategori_spesifik = daftar_kategori_distorsi[prediksi_dua]
                     col_satu, col_dua = st.columns(2)
                     
                     with col_satu:
