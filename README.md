@@ -66,7 +66,7 @@ Gerbang pemisah antara pikiran sehat (Normal) dan terdistorsi. Menggunakan metod
 *   **Epochs:** `20`
 *   **Batch Size:** `16`
 *   **Weight Decay:** `0.05`
-*   **Akurasi Akhir:** **96.50%**
+*   **Akurasi Akhir:** **80.71%**
 
 ### Level 2: Multiclass Extractor (LoRA Adapter)
 Pengekstrak akar distorsi (11 jenis *Cognitive Distortion*). Menggunakan metode adaptasi matriks rendah **Low-Rank Adaptation**.
@@ -78,9 +78,21 @@ Pengekstrak akar distorsi (11 jenis *Cognitive Distortion*). Menggunakan metode 
 
 <p align="center"><img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" width="100%"></p>
 
-## 📊 Kinerja Kuantitatif Model (Level 2)
+## 📊 Kinerja Kuantitatif Model
 
-Evaluasi terhadap kelas minoritas terdistribusi untuk mendiagnosis distorsi secara spesifik:
+Evaluasi komprehensif dilakukan pada kedua level arsitektur untuk memastikan presisi klinis dari deteksi kognitif.
+
+### Level 1: Binary Classification (Normal vs Distorsi)
+Membedakan apakah teks sehat atau terdistorsi secara kognitif. (Threshold Optimal: 0.56)
+
+| Kategori Deteksi | Precision | Recall | F1-Score | Support |
+| :--- | :--- | :--- | :--- | :--- |
+| **Normal (0)** | 0.83 | 0.75 | 0.79 | 337 |
+| **Distorsi (1)** | 0.79 | 0.86 | 0.82 | 363 |
+| ***Macro Average*** | *0.81* | *0.81* | *0.81* | *700* |
+
+### Level 2: Multiclass Classification (11 Cognitive Distortions)
+Evaluasi spesifik terhadap kelas minoritas terdistribusi untuk mendiagnosis jenis distorsi.
 
 | Kategori Distorsi | Precision | Recall | F1-Score | Support |
 | :--- | :--- | :--- | :--- | :--- |
