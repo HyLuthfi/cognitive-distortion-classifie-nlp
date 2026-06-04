@@ -302,9 +302,9 @@ with tab_model_1:
     st.markdown("""
     ### Tahap 0: Pra-pemrosesan Data (Preprocessing)
     Pada tahap awal, seluruh dataset mentah teks berbahasa Indonesia diproses menggunakan algoritma NLP standar. Langkah-langkah ini mencakup:
-    *   **Pembersihan Teks (Cleansing):** Menghapus karakter khusus, angka berlebih, dan *whitespace*.
+    *   **Pembersihan Teks (Cleansing):** Menghapus simbol khusus seperti tanda dolar (`$`), URL (`http`), *mentions* (`@`), dan menormalisasi *whitespace*.
     *   **Labeling Ulang:** Mengonversi 11 jenis kelas distorsi menjadi satu kelas sentral (Label `1` = *Distorsi Kognitif*), dan mempertahankan kelas 'No Distortion' (Label `0` = *Normal*).
-    *   **Tokenisasi:** Menggunakan tokenizer dari `w11wo/indonesian-roberta-base-sentiment-classifier` dengan batas maksimal *sequence length* 512 token untuk mengubah teks menjadi *input IDs* dan *attention masks*.
+    *   **Tokenisasi:** Menggunakan tokenizer dari `w11wo/indonesian-roberta-base-sentiment-classifier` dengan batas maksimal *sequence length* 256 token untuk mengubah teks menjadi *input IDs* dan *attention masks*.
     
     ### Tahap 1: Arsitektur Model (Full Fine-Tuning)
     Model Level 1 didesain sebagai "gerbang penyaring" pertama. Kami memanfaatkan arsitektur **RoBERTa (Robustly Optimized BERT Approach)** yang telah di-*pretrain* pada korpus bahasa Indonesia. Pada tahap ini, seluruh bobot jaringan (*full fine-tuning*) disesuaikan untuk tugas klasifikasi biner. Lapisan klasifikasi akhir diubah konfigurasinya untuk mendeteksi `num_labels=2`.
@@ -317,8 +317,9 @@ with tab_model_1:
     | **Base Model** | `indonesian-roberta-base` | Model dasar dengan pemahaman tata bahasa Indonesia. |
     | **Learning Rate** | `2e-5` | Nilai peluruhan yang sangat kecil agar tidak merusak bobot *pretrained*. |
     | **Batch Size** | `16` (Train) / `32` (Eval) | Mengoptimalkan pemanfaatan VRAM pada GPU. |
-    | **Epochs** | `5` | Jumlah iterasi penuh pada seluruh dataset pelatihan. |
-    | **Weight Decay** | `0.01` | Mencegah *overfitting* yang ekstrem. |
+    | **Epochs** | `20` | Jumlah iterasi penuh pada seluruh dataset pelatihan. |
+    | **Weight Decay** | `0.05` | Mencegah *overfitting* yang ekstrem. |
+    | **LR Scheduler** | `Cosine` (Warmup 0.1) | Mengatur kurva laju pembelajaran secara dinamis. |
     """)
     
     st.markdown("<br>### Tahap 3: Evaluasi & Metrik Performa<br>", unsafe_allow_html=True)
@@ -338,7 +339,7 @@ with tab_model_2:
     
     st.markdown("""
     ### Tahap 0: Segmentasi & Re-Tokenisasi Data
-    Model Level 2 dikhususkan hanya untuk penderita distorsi. Oleh karena itu, data yang masuk ke tahap ini secara eksklusif hanyalah dataset dengan label asli distorsi kognitif (11 kelas). Data *No Distortion* dibuang secara terprogram. Proses tokenisasi menggunakan panjang sekuens yang sama (512 token) untuk menjaga integritas tensor.
+    Model Level 2 dikhususkan hanya untuk penderita distorsi. Oleh karena itu, data yang masuk ke tahap ini secara eksklusif hanyalah dataset dengan label asli distorsi kognitif (11 kelas). Data *No Distortion* dibuang secara terprogram. Proses tokenisasi menggunakan panjang sekuens yang sama (256 token) untuk menjaga integritas tensor.
 
     ### Tahap 1: Arsitektur Model (Parameter-Efficient Fine-Tuning)
     Karena 11 kelas klasifikasi membutuhkan sensitivitas leksikal yang lebih tinggi, *Full Fine-Tuning* berisiko memicu *catastrophic forgetting*. Solusi yang diterapkan adalah menggunakan **Low-Rank Adaptation (LoRA)**. 
@@ -353,8 +354,8 @@ with tab_model_2:
     | **LoRA Alpha** | `32` | Faktor skala penyelarasan *adapter* (*scaling factor*). |
     | **Target Modules** | `["query", "value"]` | Lapisan *attention* spesifik tempat matriks diinjeksi. |
     | **LoRA Dropout** | `0.1` | Probabilitas menonaktifkan neuron untuk mencegah *overfitting*. |
-    | **Learning Rate** | `5e-4` | Karena parameter sedikit, LR ditingkatkan 25x lipat dari Model 1. |
-    | **Epochs** | `10` | Proses adaptasi LoRA butuh iterasi lebih banyak untuk konvergen. |
+    | **Learning Rate** | `3e-4` | Karena parameter sedikit, LR ditingkatkan 15x lipat dari Model 1. |
+    | **Epochs** | `15` | Proses adaptasi LoRA butuh iterasi lebih banyak untuk konvergen. |
     """)
 
     st.markdown("<br>### Tahap 3: Evaluasi & Hasil Akhir (11 Kelas Kognitif)<br>", unsafe_allow_html=True)
