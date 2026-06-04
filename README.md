@@ -1,7 +1,11 @@
 <img src="https://capsule-render.vercel.app/api?type=waving&color=0:3b82f6,100:8b5cf6&height=120&section=header" width="100%">
 
 <div align="center">
-  <img src="https://placehold.co/1000x500/F8FAFC/2563EB?text=Screenshot+Dashboard+Akan+Ditempatkan+Di+Sini" alt="AI Dashboard" width="100%" style="border-radius: 16px; box-shadow: 0px 10px 20px rgba(0,0,0,0.1);">
+  <br />
+  <a href="https://cognitive-distortion-classifie-nlp.streamlit.app/" target="_blank">
+    <img src="https://img.shields.io/badge/🚀_AKSES_LIVE_DASHBOARD_STREAMLIT-2563EB?style=for-the-badge&logo=streamlit&logoColor=white" alt="Launch Dashboard" style="border-radius: 12px; box-shadow: 0px 10px 20px rgba(37,99,235,0.3);">
+  </a>
+  <br />
   
   <br />
   <br />
