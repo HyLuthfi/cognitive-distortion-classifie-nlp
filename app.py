@@ -17,19 +17,19 @@ css_kustom = """
 
     html, body, [class*="css"]  {
         font-family: 'Plus Jakarta Sans', sans-serif;
-        background-color: #0B0F19;
-        color: #F3F4F6 !important;
+        background-color: #F8FAFC;
+        color: #1E293B !important;
     }
     
     .stApp {
-        background-color: #0B0F19;
+        background-color: #F8FAFC;
     }
 
     .stTabs [data-baseweb="tab-list"] {
         display: flex;
         justify-content: center;
         gap: 30px;
-        border-bottom: 1px solid #1F2937;
+        border-bottom: 1px solid #E2E8F0;
         padding-bottom: 10px;
         margin-bottom: 2rem;
     }
@@ -40,7 +40,7 @@ css_kustom = """
         background-color: transparent;
         border-radius: 0px;
         padding: 10px 15px;
-        color: #6B7280;
+        color: #64748B;
         font-weight: 600;
         font-size: 1.1rem;
         border: none !important;
@@ -48,35 +48,38 @@ css_kustom = """
     }
     
     .stTabs [aria-selected="true"] {
-        color: #F9FAFB !important;
-        border-bottom: 3px solid #3B82F6 !important;
+        color: #0F172A !important;
+        border-bottom: 3px solid #2563EB !important;
         background-color: transparent !important;
     }
 
     .metric-card {
-        background-color: rgba(31, 41, 55, 0.4);
-        backdrop-filter: blur(10px);
-        color: #F9FAFB !important;
-        border: 1px solid #374151;
+        background-color: #FFFFFF;
+        color: #0F172A !important;
+        border: 1px solid #E2E8F0;
         border-radius: 12px;
         padding: 32px 24px;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
         text-align: center;
         transition: transform 0.2s ease-in-out;
     }
     
     .info-card {
-        background-color: rgba(31, 41, 55, 0.6);
-        color: #E5E7EB !important;
-        border: 1px solid #374151;
+        background-color: #F1F5F9;
+        color: #334155 !important;
+        border: 1px solid #E2E8F0;
         border-left: 4px solid #3B82F6;
         border-radius: 8px;
         padding: 24px;
         margin-bottom: 24px;
     }
 
-    h1, h2, h3, h4, p {
-        color: #F9FAFB !important;
+    h1, h2, h3, h4 {
+        color: #0F172A !important;
+    }
+    
+    p {
+        color: #334155 !important;
     }
 
     .stButton > button {
@@ -95,36 +98,36 @@ css_kustom = """
     }
     
     .status-normal {
-        color: #10B981;
-        background-color: rgba(16, 185, 129, 0.1);
+        color: #059669;
+        background-color: #D1FAE5;
         padding: 6px 20px;
         border-radius: 6px;
         font-weight: 600;
         font-size: 1.1rem;
         display: inline-block;
-        border: 1px solid #059669;
+        border: 1px solid #34D399;
     }
     
     .status-distorsi {
-        color: #EF4444;
-        background-color: rgba(239, 68, 68, 0.1);
+        color: #DC2626;
+        background-color: #FEE2E2;
         padding: 6px 20px;
         border-radius: 6px;
         font-weight: 600;
         font-size: 1.1rem;
         display: inline-block;
-        border: 1px solid #DC2626;
+        border: 1px solid #F87171;
     }
 
     .stTextArea > div > div > textarea {
-        background-color: #1F2937;
-        color: #F9FAFB !important;
-        border: 1px solid #374151;
+        background-color: #FFFFFF;
+        color: #0F172A !important;
+        border: 1px solid #CBD5E1;
         border-radius: 8px;
     }
     
     hr {
-        border-color: #374151;
+        border-color: #E2E8F0;
         margin: 2rem 0;
     }
 </style>
@@ -197,7 +200,7 @@ def tampilkan_gambar_visualisasi(nama_file, deskripsi):
         st.info(f"Aset visual {nama_file} belum tersedia di direktori img.")
 
 st.markdown("<h1 style='text-align: center; margin-top: 1rem;'>Dasbor Analisis Forensik Kognitif</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; font-size: 1.1rem; color: #9CA3AF !important; margin-bottom: 2rem;'>Sistem Otomatisasi Deteksi Distorsi Kognitif Menggunakan RoBERTa dan LoRA Adapter</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; font-size: 1.1rem; color: #64748B !important; margin-bottom: 2rem;'>Sistem Otomatisasi Deteksi Distorsi Kognitif Menggunakan RoBERTa dan LoRA Adapter</p>", unsafe_allow_html=True)
 
 tab_analisis, tab_model_1, tab_model_2 = st.tabs([
     "Inspeksi Kognitif", 
@@ -264,13 +267,13 @@ with tab_analisis:
                     with kolom_hasil_tengah:
                         st.markdown(f"""
                         <div class='metric-card'>
-                            <h3 style='color: #9CA3AF !important; font-size: 1.2rem; margin-bottom: 1.5rem;'>Hasil Penyaringan Tahap 1</h3>
+                            <h3 style='color: #64748B !important; font-size: 1.2rem; margin-bottom: 1.5rem;'>Hasil Penyaringan Tahap 1</h3>
                             <div style='margin-bottom: 2rem;'>
                                 <span class='{status_gaya}'>{status_kelas}</span>
                             </div>
-                            <p style='margin: 0; font-size: 0.9rem; color: #9CA3AF !important;'>Tingkat Kepastian Probabilistik</p>
-                            <h2 style='margin: 0 0 1.5rem 0; color: #F9FAFB !important;'>{skor_kepastian_satu:.2f}%</h2>
-                            <p style='font-size: 0.9rem; color: #D1D5DB !important;'>Teks tidak memenuhi ambang batas indikasi distorsi kognitif. Inferensi tahap kedua dihentikan.</p>
+                            <p style='margin: 0; font-size: 0.9rem; color: #64748B !important;'>Tingkat Kepastian Probabilistik</p>
+                            <h2 style='margin: 0 0 1.5rem 0; color: #0F172A !important;'>{skor_kepastian_satu:.2f}%</h2>
+                            <p style='font-size: 0.9rem; color: #4B5563 !important;'>Teks tidak memenuhi ambang batas indikasi distorsi kognitif. Inferensi tahap kedua dihentikan.</p>
                         </div>
                         """, unsafe_allow_html=True)
                 else:
@@ -286,24 +289,24 @@ with tab_analisis:
                     with col_satu:
                         st.markdown(f"""
                         <div class='metric-card'>
-                            <h3 style='color: #9CA3AF !important; font-size: 1.2rem; margin-bottom: 1.5rem;'>Level 1: Deteksi Biner (HuggingFace)</h3>
+                            <h3 style='color: #64748B !important; font-size: 1.2rem; margin-bottom: 1.5rem;'>Level 1: Deteksi Biner (HuggingFace)</h3>
                             <div style='margin-bottom: 2rem;'>
                                 <span class='{status_gaya}'>{status_kelas}</span>
                             </div>
-                            <p style='margin: 0; font-size: 0.9rem; color: #9CA3AF !important;'>Tingkat Kepastian</p>
-                            <h2 style='margin: 0; color: #F9FAFB !important;'>{skor_kepastian_satu:.2f}%</h2>
+                            <p style='margin: 0; font-size: 0.9rem; color: #64748B !important;'>Tingkat Kepastian</p>
+                            <h2 style='margin: 0; color: #0F172A !important;'>{skor_kepastian_satu:.2f}%</h2>
                         </div>
                         """, unsafe_allow_html=True)
                         
                     with col_dua:
                         st.markdown(f"""
                         <div class='metric-card'>
-                            <h3 style='color: #9CA3AF !important; font-size: 1.2rem; margin-bottom: 1.5rem;'>Level 2: Klasifikasi Spesifik (LoRA Adapter)</h3>
+                            <h3 style='color: #64748B !important; font-size: 1.2rem; margin-bottom: 1.5rem;'>Level 2: Klasifikasi Spesifik (LoRA Adapter)</h3>
                             <div style='margin-bottom: 2rem;'>
                                 <span class='status-distorsi'>{kategori_spesifik}</span>
                             </div>
-                            <p style='margin: 0; font-size: 0.9rem; color: #9CA3AF !important;'>Tingkat Kepastian</p>
-                            <h2 style='margin: 0; color: #F9FAFB !important;'>{skor_kepastian_dua:.2f}%</h2>
+                            <p style='margin: 0; font-size: 0.9rem; color: #64748B !important;'>Tingkat Kepastian</p>
+                            <h2 style='margin: 0; color: #0F172A !important;'>{skor_kepastian_dua:.2f}%</h2>
                         </div>
                         """, unsafe_allow_html=True)
 
@@ -335,12 +338,9 @@ with tab_model_1:
     """)
     
     st.markdown("<br>### Tahap 3: Evaluasi & Metrik Performa<br>", unsafe_allow_html=True)
-    col_m1_1, col_m1_2 = st.columns(2)
-    with col_m1_1:
-        tampilkan_gambar_visualisasi("grafik_model1.png", "Grafik Pelatihan & Loss (Model 1)")
-    with col_m1_2:
-        tampilkan_gambar_visualisasi("metrik_eval_model1.png", "Metrik Evaluasi Keseluruhan (Model 1)")
-        
+    tampilkan_gambar_visualisasi("grafik_model1.png", "Grafik Pelatihan & Loss (Model 1)")
+    st.markdown("<br>", unsafe_allow_html=True)
+    tampilkan_gambar_visualisasi("metrik_eval_model1.png", "Metrik Evaluasi Keseluruhan (Model 1)")
     st.markdown("<br>", unsafe_allow_html=True)
     tampilkan_gambar_visualisasi("confusion_model1.png", "Confusion Matrix Klasifikasi Biner")
     
@@ -374,15 +374,10 @@ with tab_model_2:
     """)
 
     st.markdown("<br>### Tahap 3: Evaluasi & Hasil Akhir (11 Kelas Kognitif)<br>", unsafe_allow_html=True)
-    col_m2_1, col_m2_2 = st.columns(2)
-    with col_m2_1:
-        tampilkan_gambar_visualisasi("grafik_model2.png", "Grafik Pelatihan & Loss LoRA (Model 2)")
-    with col_m2_2:
-        tampilkan_gambar_visualisasi("metrik_eval_model2.png", "Metrik Evaluasi 11 Kelas Distorsi")
-
+    tampilkan_gambar_visualisasi("grafik_model2.png", "Grafik Pelatihan & Loss LoRA (Model 2)")
     st.markdown("<br>", unsafe_allow_html=True)
-    col_cm1, col_cm2, col_cm3 = st.columns([1, 4, 1])
-    with col_cm2:
-        tampilkan_gambar_visualisasi("confusion_model2.png", "Confusion Matrix Ekstensif untuk 11 Kelas")
+    tampilkan_gambar_visualisasi("metrik_eval_model2.png", "Metrik Evaluasi 11 Kelas Distorsi")
+    st.markdown("<br>", unsafe_allow_html=True)
+    tampilkan_gambar_visualisasi("confusion_model2.png", "Confusion Matrix Ekstensif untuk 11 Kelas")
     
     st.markdown("</div>", unsafe_allow_html=True)
