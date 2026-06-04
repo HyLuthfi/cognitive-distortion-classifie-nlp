@@ -154,7 +154,7 @@ daftar_kategori_distorsi = [
 
 @st.cache_resource
 def muat_tokenizer():
-    return AutoTokenizer.from_pretrained(IDENTITAS_MODEL_DASAR)
+    return AutoTokenizer.from_pretrained(IDENTITAS_MODEL_LEVEL_SATU)
 
 @st.cache_resource
 def muat_model_level_satu():
