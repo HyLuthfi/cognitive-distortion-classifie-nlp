@@ -67,7 +67,7 @@ Pemetaan probabilistik dari 11 kategori distorsi psikologis.
 ## 🧬 Arsitektur AI & Teknologi
 
 ### Machine Learning Core
-- **Base Model:** `w11wo/indonesian-roberta-base`
+- **Base Model:** `w11wo/indonesian-roberta-base-sentiment-classifier`
 - **Level 1 (Binary):** Full Fine-Tuning 
 - **Level 2 (Multiclass):** Parameter-Efficient Fine-Tuning (LoRA)
 - **Rank (r):** 16
@@ -90,7 +90,7 @@ Menggunakan arsitektur `AutoModelForSequenceClassification`:
 
 ### 2. Level 2 Pipeline
 Menggunakan arsitektur `PeftModel` yang menginjeksi adapter lokal ke *base model* HuggingFace:
-**Base:** `w11wo/indonesian-roberta-base` + **Adapter:** `./lora_adapter_level2`
+**Base:** `w11wo/indonesian-roberta-base-sentiment-classifier` + **Adapter:** `./lora_adapter_level2`
 
 <p align="center"><img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" width="100%"></p>
 
