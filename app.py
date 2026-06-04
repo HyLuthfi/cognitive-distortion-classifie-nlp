@@ -188,21 +188,21 @@ def muat_model_level_dua():
 
 def tampilkan_gambar_visualisasi(nama_file, deskripsi):
     lokasi_direktori = os.path.dirname(os.path.abspath(__file__))
-    path_visual = os.path.join(lokasi_direktori, "assets", nama_file)
+    path_visual = os.path.join(lokasi_direktori, "img", nama_file)
     
     if os.path.exists(path_visual):
         gambar = Image.open(path_visual)
         st.image(gambar, caption=deskripsi, use_container_width=True)
     else:
-        st.info(f"Aset visual {nama_file} belum tersedia di direktori assets.")
+        st.info(f"Aset visual {nama_file} belum tersedia di direktori img.")
 
 st.markdown("<h1 style='text-align: center; margin-top: 1rem;'>Dasbor Analisis Forensik Kognitif</h1>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center; font-size: 1.1rem; color: #9CA3AF !important; margin-bottom: 2rem;'>Sistem Otomatisasi Deteksi Distorsi Kognitif Menggunakan RoBERTa dan LoRA Adapter</p>", unsafe_allow_html=True)
 
-tab_analisis, tab_metodologi, tab_visualisasi = st.tabs([
+tab_analisis, tab_model_1, tab_model_2 = st.tabs([
     "Inspeksi Kognitif", 
-    "Metodologi Sistem", 
-    "Analisis Matriks"
+    "Detail Model 1", 
+    "Detail Model 2"
 ])
 
 with tab_analisis:
@@ -307,41 +307,82 @@ with tab_analisis:
                         </div>
                         """, unsafe_allow_html=True)
 
-with tab_metodologi:
+with tab_model_1:
     st.markdown("<div style='padding: 1rem 3rem;'>", unsafe_allow_html=True)
-    st.markdown("<h2 style='text-align:center;'>Metodologi & Arsitektur Cloud</h2>", unsafe_allow_html=True)
-    st.markdown("<hr>", unsafe_allow_html=True)
-    
-    col_met1, col_met2 = st.columns(2)
-    with col_met1:
-        st.markdown("### Arsitektur Berjenjang")
-        st.markdown("""
-        Sistem ini menggunakan pendekatan *Two-Stage Inference Pipeline* untuk mengoptimalkan komputasi dan meminimalisir kesalahan klasifikasi (False Positives):
-        
-        1. **Level 1 (Binary Gate)** - Teks disaring oleh model *Full Fine-Tuned* RoBERTa. Model ini dilatih secara khusus hanya untuk membedakan antara bahasa yang normal dengan bahasa yang mengandung distorsi psikologis.
-        2. **Level 2 (Multiclass Routing)** - Apabila Gerbang Level 1 mendeteksi adanya distorsi, data akan diteruskan ke model sekunder yang telah diinjeksi dengan *Low-Rank Adaptation* (LoRA). Model ini memetakan teks ke dalam 11 kelas psikologi spesifik.
-        """)
-    
-    with col_met2:
-        st.markdown("### Optimalisasi Memori dengan PEFT")
-        st.markdown("""
-        Penerapan *Parameter-Efficient Fine-Tuning* (PEFT) memungkinkan arsitektur ini berjalan pada lingkungan server yang sangat terbatas:
-        
-        *   **HuggingFace Cloud**: Pembobotan utama untuk Level 1 sebesar 500 MB tidak disimpan di *repository* lokal, melainkan dipanggil secara asinkron dari *cloud*.
-        *   **LoRA Micro-Adapter**: Untuk pengenalan 11 kelas yang kompleks, sistem tidak memerlukan 500 MB tambahan. Sistem hanya menggunakan injeksi matriks *query* dan *value* berukuran 4.7 MB, yang menghemat ruang hingga 99% tanpa penurunan metrik performa.
-        """)
-    st.markdown("</div>", unsafe_allow_html=True)
-
-with tab_visualisasi:
-    st.markdown("<div style='padding: 1rem 3rem;'>", unsafe_allow_html=True)
-    st.markdown("<h2 style='text-align:center;'>Analisis Matriks Validasi</h2>", unsafe_allow_html=True)
+    st.markdown("<h2 style='text-align:center;'>Model 1: Binary Classification Gate (RoBERTa)</h2>", unsafe_allow_html=True)
     st.markdown("<hr>", unsafe_allow_html=True)
     
     st.markdown("""
-    Evaluasi model dilakukan secara independen terhadap himpunan data uji. Visualisasi *Confusion Matrix* di bawah ini merepresentasikan kemampuan model dalam mendiagnosis distribusi kelas minoritas.
-    """)
-    st.markdown("<br>", unsafe_allow_html=True)
+    ### Tahap 0: Pra-pemrosesan Data (Preprocessing)
+    Pada tahap awal, seluruh dataset mentah teks berbahasa Indonesia diproses menggunakan algoritma NLP standar. Langkah-langkah ini mencakup:
+    *   **Pembersihan Teks (Cleansing):** Menghapus karakter khusus, angka berlebih, dan *whitespace*.
+    *   **Labeling Ulang:** Mengonversi 11 jenis kelas distorsi menjadi satu kelas sentral (Label `1` = *Distorsi Kognitif*), dan mempertahankan kelas 'No Distortion' (Label `0` = *Normal*).
+    *   **Tokenisasi:** Menggunakan tokenizer dari `w11wo/indonesian-roberta-base-sentiment-classifier` dengan batas maksimal *sequence length* 512 token untuk mengubah teks menjadi *input IDs* dan *attention masks*.
     
-    tampilkan_gambar_visualisasi("Confusion_Matrix_Level2.png", "Matriks Kebingungan Klasifikasi 11 Kelas Kognitif")
+    ### Tahap 1: Arsitektur Model (Full Fine-Tuning)
+    Model Level 1 didesain sebagai "gerbang penyaring" pertama. Kami memanfaatkan arsitektur **RoBERTa (Robustly Optimized BERT Approach)** yang telah di-*pretrain* pada korpus bahasa Indonesia. Pada tahap ini, seluruh bobot jaringan (*full fine-tuning*) disesuaikan untuk tugas klasifikasi biner. Lapisan klasifikasi akhir diubah konfigurasinya untuk mendeteksi `num_labels=2`.
+    
+    ### Tahap 2: Hyperparameter Tuning
+    Penyesuaian konfigurasi pembelajaran (*hyperparameters*) dilakukan secara komprehensif untuk memastikan konvergensi model tanpa terjadi *vanishing gradient* atau *mode collapse*. Berikut adalah rincian metrik pelatihan:
+    
+    | Parameter | Nilai Konfigurasi | Deskripsi |
+    | :--- | :--- | :--- |
+    | **Base Model** | `indonesian-roberta-base` | Model dasar dengan pemahaman tata bahasa Indonesia. |
+    | **Learning Rate** | `2e-5` | Nilai peluruhan yang sangat kecil agar tidak merusak bobot *pretrained*. |
+    | **Batch Size** | `16` (Train) / `32` (Eval) | Mengoptimalkan pemanfaatan VRAM pada GPU. |
+    | **Epochs** | `5` | Jumlah iterasi penuh pada seluruh dataset pelatihan. |
+    | **Weight Decay** | `0.01` | Mencegah *overfitting* yang ekstrem. |
+    """)
+    
+    st.markdown("<br>### Tahap 3: Evaluasi & Metrik Performa<br>", unsafe_allow_html=True)
+    col_m1_1, col_m1_2 = st.columns(2)
+    with col_m1_1:
+        tampilkan_gambar_visualisasi("grafik_model1.png", "Grafik Pelatihan & Loss (Model 1)")
+    with col_m1_2:
+        tampilkan_gambar_visualisasi("metrik_eval_model1.png", "Metrik Evaluasi Keseluruhan (Model 1)")
+        
+    st.markdown("<br>", unsafe_allow_html=True)
+    tampilkan_gambar_visualisasi("confusion_model1.png", "Confusion Matrix Klasifikasi Biner")
+    
+    st.markdown("</div>", unsafe_allow_html=True)
+
+
+with tab_model_2:
+    st.markdown("<div style='padding: 1rem 3rem;'>", unsafe_allow_html=True)
+    st.markdown("<h2 style='text-align:center;'>Model 2: Multiclass Classification (LoRA Adapter)</h2>", unsafe_allow_html=True)
+    st.markdown("<hr>", unsafe_allow_html=True)
+    
+    st.markdown("""
+    ### Tahap 0: Segmentasi & Re-Tokenisasi Data
+    Model Level 2 dikhususkan hanya untuk penderita distorsi. Oleh karena itu, data yang masuk ke tahap ini secara eksklusif hanyalah dataset dengan label asli distorsi kognitif (11 kelas). Data *No Distortion* dibuang secara terprogram. Proses tokenisasi menggunakan panjang sekuens yang sama (512 token) untuk menjaga integritas tensor.
+
+    ### Tahap 1: Arsitektur Model (Parameter-Efficient Fine-Tuning)
+    Karena 11 kelas klasifikasi membutuhkan sensitivitas leksikal yang lebih tinggi, *Full Fine-Tuning* berisiko memicu *catastrophic forgetting*. Solusi yang diterapkan adalah menggunakan **Low-Rank Adaptation (LoRA)**. 
+    Kami membekukan ( *freeze* ) seluruh matriks parameter asli RoBERTa (berukuran >500MB) dan hanya menyuntikkan matriks pembaruan kecil (*adapters*) ke dalam lapisan *Query* dan *Value* pada modul atensi. Ini menghasilkan ukuran model tambahan hanya ~4.7MB.
+
+    ### Tahap 2: Konfigurasi LoRA & Hyperparameter
+    Parameter di bawah ini adalah kunci utama untuk mencapai ekuilibrium performa antara komputasi yang efisien dengan tingkat akurasi diagnostik.
+    
+    | Parameter | Nilai Konfigurasi | Deskripsi |
+    | :--- | :--- | :--- |
+    | **Rank (r)** | `16` | Dimensi matriks dekomposisi pada LoRA. |
+    | **LoRA Alpha** | `32` | Faktor skala penyelarasan *adapter* (*scaling factor*). |
+    | **Target Modules** | `["query", "value"]` | Lapisan *attention* spesifik tempat matriks diinjeksi. |
+    | **LoRA Dropout** | `0.1` | Probabilitas menonaktifkan neuron untuk mencegah *overfitting*. |
+    | **Learning Rate** | `5e-4` | Karena parameter sedikit, LR ditingkatkan 25x lipat dari Model 1. |
+    | **Epochs** | `10` | Proses adaptasi LoRA butuh iterasi lebih banyak untuk konvergen. |
+    """)
+
+    st.markdown("<br>### Tahap 3: Evaluasi & Hasil Akhir (11 Kelas Kognitif)<br>", unsafe_allow_html=True)
+    col_m2_1, col_m2_2 = st.columns(2)
+    with col_m2_1:
+        tampilkan_gambar_visualisasi("grafik_model2.png", "Grafik Pelatihan & Loss LoRA (Model 2)")
+    with col_m2_2:
+        tampilkan_gambar_visualisasi("metrik_eval_model2.png", "Metrik Evaluasi 11 Kelas Distorsi")
+
+    st.markdown("<br>", unsafe_allow_html=True)
+    col_cm1, col_cm2, col_cm3 = st.columns([1, 4, 1])
+    with col_cm2:
+        tampilkan_gambar_visualisasi("confusion_model2.png", "Confusion Matrix Ekstensif untuk 11 Kelas")
     
     st.markdown("</div>", unsafe_allow_html=True)
